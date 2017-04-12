@@ -1,2 +1,8 @@
 peabody_files/*
 .ipynb_checkpoints/*
+peabody_files/
+*.pyc
+.DS_Store
+db.sqlite3
+__pycache__
+*~
