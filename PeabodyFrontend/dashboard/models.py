@@ -8,3 +8,10 @@ class Entry(models.Model):
     site = models.CharField(max_length=70, blank=True, null=True)
     name = models.CharField(max_length=70, blank=True, null=True)
     situation = models.TextField(blank=True, null=True)
+    def toDict(self):
+    	return {"catNumber": self.catNumber, \
+    			"siteNumber": self.siteNumber, \
+    			"locality": self.locality, \
+    			"site": self.site, \
+    			"name": self.name, \
+    			"situation": self.situation}
