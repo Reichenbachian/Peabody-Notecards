@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            Peabody Notecards
+        </title>
+        <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1" name="viewport">
+                <!-- Add additional CSS in static file -->
+                {% load static %}
+                <link href="{% static 'dashboard/css/bootstrap.min.css' %}" rel="stylesheet">
+                </link>
+                <link href="{% static 'dashboard/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"/>
+                <link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet"/>
+                <link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet"/>
+                <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet"/>
+                <script src="{% static 'dashboard/js/jquery.js' %}">
+                </script>
+                <script src="{% static 'dashboard/js/bootstrap.min.js' %}">
+                </script>
+                <!-- Scrolling Nav JavaScript -->
+                <script src="{% static 'dashboard/js/jquery.easing.min.js' %}">
+                </script>
+                <script src="{% static 'dashboard/js/scrolling-nav.js' %}">
+                </script>
+            </meta>
+        </meta>
+    </head>
+    <body data-spy="scroll" data-target=".navbar-fixed-top" id="page-top">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+                        <span class="sr-only">
+                            Toggle navigation
+                        </span>
+                        <span class="icon-bar">
+                        </span>
+                        <span class="icon-bar">
+                        </span>
+                        <span class="icon-bar">
+                        </span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="#page-top">
+                        Peabody Notecards
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li class="hidden">
+                            <a class="page-scroll" href="#page-top">
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">
+                                Top
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        >
+        <!-- Intro Section -->
+        <section class="intro-section" id="intro">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="text-white">
+                            Search the Database
+                        </h1>
+                    </div>
+                    <div>
+                        <form action="." class="form-group" id="search">
+                            {% csrf_token %}
+                            <div>
+                                <input aria-describedby="queryBar" name="queryBar" class="form-control" id="queryBar" placeholder="Query" type="Query">
+                                </input>
+                                <br>
+                                    <input class="form-control btn" id="submit" type="submit">
+                                    </input>
+                                </br>
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            function showResults(xml) {
+                                $("#results").find("tr:gt(0)").remove();
+                                if(xml.length == 0) {
+                                    $("#results").append("<tr><td>No Results!</td></tr>")
+                                }
+                                for (var i = 0; i < xml.length; i++) {
+                                    $("#results").append("<tr><td>"+xml[i]["catNumber"]+
+                                        "</td><td>"+xml[i]["siteNumber"]+
+                                        "</td><td>"+xml[i]["locality"]+
+                                        "</td><td>"+xml[i]["site"]+
+                                        "</td><td>"+xml[i]["name"]+
+                                        "</td><td>"+xml[i]["situation"]+
+                                        "</td></tr>");
+                                }
+                                $("#result-section").css("height", $("#results").height());
+                            }
+                            function receiveQueryResults(xml) {
+                                console.log(xml);
+                            }
+                            $(document).ready( function () {
+
+                            $('#search').on('click', function(e){
+                                e.preventDefault();
+                                var formdata = $(this).serialize();
+                                formdata["a"] = $("#queryBar");
+                                $.ajax({
+                                    type: "POST",
+                                    url: "api/getSearchResults/",
+                                    data: formdata,
+                                    success: showResults,
+                                    });
+                                    return false;
+                                });
+                            });
+                        </script>
+                    </div>
+                    <a class="btn btn-info btn-lg page-scroll" href="#about">
+                        <i aria-hidden="true" class="fa fa-angle-double-down">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
+<!-- About Section -->
+<section class="result-section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 align="middle">
+                    Search Results
+                </h1>
+                <table id="results" style="width:100%;" class="table">
+                    <tr>
+                        <th>Cat Number</th>
+                        <th>Site Number</th> 
+                        <th>Locality</th>
+                        <th>Site</th>
+                        <th>Name</th>
+                        <th>Situation</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
