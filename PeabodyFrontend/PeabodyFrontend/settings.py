@@ -27,7 +27,7 @@ SECRET_KEY = 'e6igr*q0xfif3g%1dhg*ixwwkwu66nsm=0jf2_d=m)ge=1evb3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['peabodynotecards.herokuapp.com','localhost', '127.0.0.1', '127.0.0.1:8000']
 
 
 # Application definition
