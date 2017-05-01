@@ -66,32 +66,60 @@
     <!-- /.container -->
   </nav>
 
+
   <!-- Intro Section -->
   <section class="intro-section" id="intro">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1 class="text-white">
-            Search the Database
-          </h1>
-        </div>
-        <div>
-          <form action="." class="form-group" id="search">
-            {% csrf_token %}
-            <div>
-              <input aria-describedby="queryBar" name="queryBar" class="form-control" id="queryBar" placeholder="Query" type="Query">
-            </input>
-            <br>
-            <input class="form-control btn" id="submit" type="submit">
-          </input>
-        </br>
+    <script>
+    $('#search').on('click', function(e){
+      e.preventDefault();
+      var formdata = $(this).serialize();
+      // formdata["a"] = $("#queryBar");
+      $.ajax({
+        type: "POST",
+        url: "api/getSearchResults/",
+        data: formdata,
+        success: showResults,
+      });
+      return false;
+    });
+  });
+</script>
+</div>
+<a class="btn btn-info btn-lg page-scroll" href="#about">
+  <i aria-hidden="true" class="fa fa-angle-double-down">
+  </i>
+</a>
+</div>
+</div>
+</section>
+</body>
+</html>
+<!-- About Section -->
+<section class="result-section" id="about">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="text-white">
+          Search the Database
+        </h1>
       </div>
-    </form>
-  </div>
-  <a class="btn btn-info btn-lg page-scroll" href="#about">
-    <i aria-hidden="true" class="fa fa-angle-double-down">
-    </i>
-  </a>
+      <div>
+        <form action="." class="form-group" id="search">
+          {% csrf_token %}
+          <div>
+            <input aria-describedby="queryBar" name="queryBar" class="form-control" id="queryBar" placeholder="Query" type="Query">
+          </input>
+          <br>
+          <input class="form-control btn" id="submit" type="submit">
+        </input>
+      </br>
+    </div>
+  </form>
+</div>
+<a class="btn btn-info btn-lg page-scroll" href="#about">
+  <i aria-hidden="true" class="fa fa-angle-double-down">
+  </i>
+</a>
 </div>
 </div>
 </section>
