@@ -114,7 +114,7 @@
                             $('#search').on('click', function(e){
                                 e.preventDefault();
                                 var formdata = $(this).serialize();
-                                formdata["a"] = $("#queryBar");
+                                // formdata["a"] = $("#queryBar");
                                 $.ajax({
                                     type: "POST",
                                     url: "api/getSearchResults/",
