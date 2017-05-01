@@ -67,7 +67,7 @@
             </div>
             <!-- /.container -->
         </nav>
-        >
+        
         <!-- Intro Section -->
         <section class="intro-section" id="intro">
             <div class="container">
@@ -110,11 +110,10 @@
                                 console.log(xml);
                             }
                             $(document).ready( function () {
-
                             $('#search').on('click', function(e){
                                 e.preventDefault();
                                 var formdata = $(this).serialize();
-                                formdata["a"] = $("#queryBar");
+                                // formdata["a"] = $("#queryBar");
                                 $.ajax({
                                     type: "POST",
                                     url: "api/getSearchResults/",
@@ -146,7 +145,7 @@
                 <table id="results" style="width:100%;" class="table">
                     <tr>
                         <th>Cat Number</th>
-                        <th>Site Number</th> 
+                        <th>Site Number</th>
                         <th>Locality</th>
                         <th>Site</th>
                         <th>Name</th>
