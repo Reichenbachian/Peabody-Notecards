@@ -67,7 +67,7 @@
             </div>
             <!-- /.container -->
         </nav>
-        >
+        
         <!-- Intro Section -->
         <section class="intro-section" id="intro">
             <div class="container">
@@ -78,31 +78,43 @@
                         </h1>
                     </div>
                     <div>
+                        <div class="alert alert-danger" id="queryError" style="display: none">
+                        </div>
                         <form action="." class="form-group" id="search">
                             {% csrf_token %}
                             <div>
                                 <input aria-describedby="queryBar" name="queryBar" class="form-control" id="queryBar" placeholder="Query" type="Query">
                                 </input>
                                 <br>
-                                    <input class="form-control btn" id="submit" type="submit">
+                                    <input class="form-control btn searchBtn" id="submit" type="submit">
                                     </input>
                                 </br>
                             </div>
                         </form>
                         <script type="text/javascript">
+                            function showError(xhr, status, errorThrown) {
+                                $("#queryError").show();
+                                var innerHtml = "<strong>Error!</strong> Is server running?";
+                                document.getElementById("queryError").innerHTML=innerHtml;
+                            }
                             function showResults(xml) {
+                                $("#queryError").hide();
+                                var id = 0;
                                 $("#results").find("tr:gt(0)").remove();
                                 if(xml.length == 0) {
                                     $("#results").append("<tr><td>No Results!</td></tr>")
                                 }
+                                var editString = "<td><button class='btn editButton' href='test.com' onclick='editClicked(this.name)'>Edit</button></td>";
                                 for (var i = 0; i < xml.length; i++) {
-                                    $("#results").append("<tr><td>"+xml[i]["catNumber"]+
-                                        "</td><td>"+xml[i]["siteNumber"]+
-                                        "</td><td>"+xml[i]["locality"]+
-                                        "</td><td>"+xml[i]["site"]+
-                                        "</td><td>"+xml[i]["name"]+
-                                        "</td><td>"+xml[i]["situation"]+
-                                        "</td></tr>");
+                                    $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["catNumber"]+
+                                        // "</td><td>"+xml[i]["siteNumber"]+
+                                        // "</td><td>"+xml[i]["locality"]+
+                                        // "</td><td>"+xml[i]["site"]+
+                                        // "</td><td>"+xml[i]["name"]+
+                                        "</td><td id='item_"+id+"'>"+xml[i]["situation"]+
+                                        "</td id='item_"+id+"'>"+editString+
+                                        "</tr>");
+                                    id+=1;
                                 }
                                 $("#result-section").css("height", $("#results").height());
                             }
@@ -118,7 +130,9 @@
                                     type: "POST",
                                     url: "api/getSearchResults/",
                                     data: formdata,
+                                    timeout: 1000,
                                     success: showResults,
+                                    error: showError
                                     });
                                     return false;
                                 });
@@ -145,11 +159,12 @@
                 <table id="results" style="width:100%;" class="table">
                     <tr>
                         <th>Cat Number</th>
-                        <th>Site Number</th>
+                        <!-- <th>Site Number</th>
                         <th>Locality</th>
                         <th>Site</th>
-                        <th>Name</th>
-                        <th>Situation</th>
+                        <th>Name</th> -->
+                        <th>Description</th>
+                        <th>Edit</th>
                     </tr>
                 </table>
             </div>
