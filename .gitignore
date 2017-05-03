@@ -6,3 +6,4 @@ peabody_files/
 db.sqlite3
 __pycache__
 *~
+PeabodyFrontend/venv/*
