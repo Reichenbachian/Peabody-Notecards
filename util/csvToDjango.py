@@ -1,4 +1,4 @@
-with open("/Users/localhost/Desktop/Projects/Working/PeabodyNotecards/test.csv") as f:
+with open("/Users/ksun/downloads/Peabody-Notecards/test.csv") as f:
     reader = csv.reader(f)
     for row in reader:
         _, created = Entry.objects.get_or_create(

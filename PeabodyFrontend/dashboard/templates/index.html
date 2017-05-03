@@ -1,259 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>
-            Peabody Notecards
-        </title>
-        <meta charset="utf-8">
-            <meta content="width=device-width, initial-scale=1" name="viewport">
-                {% load static %}
-                <!-- Bootstrap CSS -->
-                <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"/>
-                <!-- Jquery JS -->
-                <script src="http://code.jquery.com/jquery-2.0.3.min.js">
-                </script>
-                <!-- Boostrap JS -->
-                <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js">
-                </script>
-                <link href="{% static 'dashboard/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"/>
-                <!-- Custom CSS Stylesheets -->
-                <link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet"/>
-                <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet"/>
-                <!-- Scrolling Nav JavaScript -->
-                <script src="{% static 'dashboard/js/jquery.easing.min.js' %}">
-                </script>
-                <script src="{% static 'dashboard/js/scrolling-nav.js' %}">
-                </script>
-                <!-- Editable Bootstrap -->
-                <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-                <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js">
-                </script>
-            </meta>
-        </meta>
-    </head>
-    <body data-spy="scroll" data-target=".navbar-fixed-top" id="page-top">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header page-scroll">
-                    <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
-                        <span class="sr-only">
-                            Toggle navigation
-                        </span>
-                        <span class="icon-bar">
-                        </span>
-                        <span class="icon-bar">
-                        </span>
-                        <span class="icon-bar">
-                        </span>
-                    </button>
-                    <a class="navbar-brand page-scroll" href="#page-top">
-                        Peabody Notecards
-                    </a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav">
-                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                        <li class="hidden">
-                            <a class="page-scroll" href="#page-top">
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#">
-                                Top
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container -->
-        </nav>
-        <!-- Intro Section -->
-        <section class="intro-section" id="intro">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h1 class="text-white">
-                            Search the Database
-                        </h1>
-                    </div>
-                    <div>
-                        <div class="alert alert-danger" id="queryError" style="display: none">
-                        </div>
-                        <form action="." class="form-group" id="search">
-                            {% csrf_token %}
-                            <div>
-                                <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Query" type="Query">
-                                </input>
-                                <br>
-                                    <input class="form-control btn searchBtn" id="submit" onclick="$('html, body').animate({scrollTop: $('#resultSection').offset().top + 20}, 1000);" type="submit">
-                                    </input>
-                                </br>
-                            </div>
-                        </form>
-                        <script type="text/javascript">
-                            var currentNotecard = -1;
-                            //Changes a notecard to an editable format
-                            function changeToEdit() {
-                                $.fn.editable.defaults.ajaxOptions = {type: "POST"};
-                                $('#locality').editable({
-                                    name:  'locality',
-                                    pk:    1,
-                                    url:   'api/',  
-                                    title: 'Enter Corrected Locality',
-                                    send: 'always'
-                                });
-                                $('#site').editable({
-                                   type:  'text',
-                                   pk:    2,
-                                   name:  'site',
-                                   url:   'api/',  
-                                   title: 'Enter Corrected Site',
-                                   send: 'always'
-                                });
-                                $('#name').editable({
-                                   type:  'text',
-                                   pk:    3,
-                                   name:  'name',
-                                   url:   'api/',  
-                                   title: 'Enter Corrected Name',
-                                   send: 'always'
-                                });
-                                $('#situation').editable({
-                                   type:  'text',
-                                   pk:    4,
-                                   name:  'situation',
-                                   url:   'api/',  
-                                   title: 'Enter Corrected Description',
-                                   send: 'always'
-                                });
-                            }
+<head>
+  <title>
+    Peabody Notecards
+  </title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  {% load static %}
+  <!-- Bootstrap CSS -->
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Jquery JS -->
+  <script src="http://code.jquery.com/jquery-2.0.3.min.js">
+  </script>
+  <!-- Boostrap JS -->
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js">
+  </script>
+  <link href="{% static 'dashboard/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"/>
 
-                            function openModal(xml) {
-                                $('#myModal').modal('toggle');
-                                $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
-                                var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
-                                var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["siteNumber"]+"</p></td></tr>";
-                                var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
-                                var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
-                                var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
-                                var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
-                                var img = '<img src="http://justcuteanimals.com/wp-content/uploads/2015/10/baby-koala-bear-cute-animals-pictures-pics-600x400.jpg" alt="" style="width: 100%;">';
-                                document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+description+img;
-                            }
-                            function loadModalDataThenOpen() {
-                                var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};
+  <!-- Editable Bootstrap -->
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js">        </script>
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: "api/",
-                                    data: formdata,
-                                    timeout: 1000,
-                                    success: openModal,
-                                    error: showError
-                                    });
-                            }
-                            function showError(xhr, status, errorThrown) {
-                                $("#queryError").show();
-                                var innerHtml = "<strong>Error!</strong> Is server running?";
-                                document.getElementById("queryError").innerHTML=innerHtml;
-                            }
-                            function showResults(xml) {
-                                $("#queryError").hide();
-                                $("#results").find("tr:gt(0)").remove();
-                                if(xml.length == 0) {
-                                    $("#results").append("<tr><td>No Results!</td></tr>")
-                                }
-                                for (var i = 0; i < xml.length; i++) {
-                                    id=xml[i]["uuid"]
-                                    var editString = "<td><button class='btn editButton'  onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
-                                    $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["catNumber"]+
-                                        "</td><td id='item_"+id+"'>"+xml[i]["situation"]+
-                                        "</td id='item_"+id+"'>"+editString+
-                                        "</tr>");
-                                }
-                                $("#result-section").css("height", $("#results").height());
-                            }
-                            function receiveQueryResults(xml) {
-                                console.log(xml);
-                            }
-                            $(document).ready( function () {
-                                $('#search').on('click', function(e){
-                                e.preventDefault();
-                                var formdata = $(this).serialize();
-                                // formdata["a"] = $("#queryBar");
-                                $.ajax({
-                                    type: "POST",
-                                    url: "api/",
-                                    data: formdata,
-                                    timeout: 1000,
-                                    success: showResults,
-                                    error: showError
-                                    });
-                                    return false;
-                                });
-                            });
-                        </script>
-                    </div>
-                    <a class="btn btn-info btn-lg page-scroll" href="#about">
-                        <i aria-hidden="true" class="fa fa-angle-double-down">
-                        </i>
-                    </a>
-                </div>
-            </div>
-        </section>
-        <!-- About Section -->
-        <section class="result-section" id="resultSection">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 align="middle">
-                            Search Results
-                        </h1>
-                        <table class="table" id="results" style="width:100%;">
-                            <tr>
-                                <th>
-                                    Cat Number
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                                <th>
-                                    View
-                                </th>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal" type="button">
-                            ×
-                        </button>
-                        <h4 class="modal-title" id="modalTitle">
-                        </h4>
-                    </div>
-                    <div class="modal-body" id="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-default pull-left" type="button" onClick="changeToEdit()">
-                            Edit
-                        </button>
-                        <button class="btn btn-default" data-dismiss="modal" type="button">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <!-- Custom CSS Stylesheets -->
+  <link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet"/>
+  <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet"/>
+  <!-- Scrolling Nav JavaScript -->
+  <script src="{% static 'dashboard/js/jquery.easing.min.js' %}">
+  </script>
+  <script src="{% static 'dashboard/js/scrolling-nav.js' %}">
+  </script>
+
+</meta>
+</meta>
+</head>
+<body data-spy="scroll" data-target=".navbar-fixed-top" id="page-top">
+  <!-- Navigation -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+          <span class="sr-only">
+            Toggle navigation
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">
+          Peabody Notecards
+        </a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+          <li class="hidden">
+            <a class="page-scroll" href="#page-top">
+            </a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a class="page-scroll" href="#page-top">
+            Top <i aria-hidden="true" class="fa fa-angle-double-up">
+              </i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+  </nav>
+  <!-- Intro Section -->
+  <section class="intro-section" id="intro">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="text-white title">
+            Search the Database
+          </h1>
         </div>
-    </body>
+        <div>
+          <div class="alert alert-danger" id="queryError" style="display: none">
+          </div>
+          <form action="." class="form-group search-form" id="search">
+            {% csrf_token %}
+            <div>
+              <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Query" type="Query">
+            </input>
+            <br>
+            <input class="btn btn-lg btn-info search-btn" id="submit" onclick="$('html, body').animate({scrollTop: $('#resultSection').offset().top + 20}, 1000);" type="submit">
+          </input>
+        </br>
+      </div>
+    </form>
+    <script type="text/javascript">
+    var currentNotecard = -1;
+    //Changes a notecard to an editable format
+    function changeToEdit() {
+      $.fn.editable.defaults.ajaxOptions = {type: "POST"};
+      $('#locality').editable({
+        name:  'locality',
+        pk:    1,
+        url:   'api/',
+        title: 'Enter Corrected Locality',
+        send: 'always'
+      });
+      $('#site').editable({
+        type:  'text',
+        pk:    2,
+        name:  'site',
+        url:   'api/',
+        title: 'Enter Corrected Site',
+        send: 'always'
+      });
+      $('#name').editable({
+        type:  'text',
+        pk:    3,
+        name:  'name',
+        url:   'api/',
+        title: 'Enter Corrected Name',
+        send: 'always'
+      });
+      $('#situation').editable({
+        type:  'text',
+        pk:    4,
+        name:  'situation',
+        url:   'api/',
+        title: 'Enter Corrected Description',
+        send: 'always'
+      });
+    }
+
+    function openModal(xml) {
+      $('#myModal').modal('toggle');
+      $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
+      var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
+      var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["siteNumber"]+"</p></td></tr>";
+      var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
+      var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
+      var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
+      var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
+      var img = '<img src="http://justcuteanimals.com/wp-content/uploads/2015/10/baby-koala-bear-cute-animals-pictures-pics-600x400.jpg" alt="" style="width: 100%;">';
+      document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+description+img;
+    }
+    function loadModalDataThenOpen() {
+      var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};
+
+      $.ajax({
+        type: "POST",
+        url: "api/",
+        data: formdata,
+        timeout: 1000,
+        success: openModal,
+        error: showError
+      });
+    }
+    function showError(xhr, status, errorThrown) {
+      $("#queryError").show();
+      var innerHtml = "<strong>Error!</strong> Is server running?";
+      document.getElementById("queryError").innerHTML=innerHtml;
+    }
+    function showResults(xml) {
+      $("#queryError").hide();
+      $("#results").find("tr:gt(0)").remove();
+      if(xml.length == 0) {
+        $("#results").append("<tr><td>No Results!</td></tr>")
+      }
+      for (var i = 0; i < xml.length; i++) {
+        id=xml[i]["uuid"]
+        var editString = "<td><button class='btn editButton'  onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
+        $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["catNumber"]+
+        "</td><td id='item_"+id+"'>"+xml[i]["situation"]+
+        "</td id='item_"+id+"'>"+editString+
+        "</tr>");
+      }
+      $("#result-section").css("height", $("#results").height());
+    }
+    function receiveQueryResults(xml) {
+      console.log(xml);
+    }
+    $(document).ready( function () {
+      $('#search').on('click', function(e){
+        e.preventDefault();
+        var formdata = $(this).serialize();
+        // formdata["a"] = $("#queryBar");
+        $.ajax({
+          type: "POST",
+          url: "api/",
+          data: formdata,
+          timeout: 1000,
+          success: showResults,
+          error: showError
+        });
+        return false;
+      });
+    });
+    </script>
+  </div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="result-section" id="resultSection">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 align="middle">
+          Search Results
+        </h1>
+        <table class="table" id="results" style="width:100%;">
+          <tr>
+            <th>
+              Cat Number
+            </th>
+            <th>
+              Description
+            </th>
+            <th>
+              View
+            </th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal" type="button">
+          ×
+        </button>
+        <h4 class="modal-title" id="modalTitle">
+        </h4>
+      </div>
+      <div class="modal-body" id="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default pull-left" type="button" onClick="changeToEdit()">
+          Edit
+        </button>
+        <button class="btn btn-default" data-dismiss="modal" type="button">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
 </html>

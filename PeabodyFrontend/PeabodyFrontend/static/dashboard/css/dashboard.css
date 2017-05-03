@@ -1,7 +1,15 @@
-.searchBtn {
-	width:10%;
+
+.title {
+	font-weight: 300;
+	font-size: 400%;
+	margin-top: 60px;
 }
 
-.editButton {
-	width:50%;
+.search-form {
+	margin-top: 60px;
+}
+
+.search-btn {
+	margin-top: 60px;
+	width: 20%;
 }
