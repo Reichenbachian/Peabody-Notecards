@@ -1,6 +1,9 @@
+from dashboard.models import *
+import csv
 with open("/Users/localhost/Desktop/Projects/Working/PeabodyNotecards/test.csv") as f:
     reader = csv.reader(f)
     for row in reader:
+        print(row[3])
         _, created = Entry.objects.get_or_create(
             catNumber=row[0],
             siteNumber=row[1],
