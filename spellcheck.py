@@ -1,7 +1,12 @@
 """Given a sentence, return a spell-checked version, with the desired corpus of words sorted by
 frequency."""
 
+import csv
 import re
+
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
 
 from bk_tree import BKTree
 
@@ -106,6 +111,3 @@ def add_word(word, bump_up_by=30):
     else:
         words.append(word)
         frequencies[word] = 1
-
-
-print(sentence_correct("Name urude quartzite stone."))
