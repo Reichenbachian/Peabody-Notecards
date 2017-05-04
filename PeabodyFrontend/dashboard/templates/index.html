@@ -134,19 +134,28 @@
         title: 'Enter Corrected Description',
         send: 'always'
       });
+      $('#site').editable({
+        type:  'text',
+        pk:    5,
+        name:  'site',
+        url:   'api/',
+        title: 'Enter Corrected Description',
+        send: 'always'
+      });
     }
 
     function openModal(xml) {
-      $('#myModal').modal('toggle');
-      $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
-      var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
-      var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["siteNumber"]+"</p></td></tr>";
-      var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
-      var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
-      var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
-      var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
-      var img = '<img src="http://justcuteanimals.com/wp-content/uploads/2015/10/baby-koala-bear-cute-animals-pictures-pics-600x400.jpg" alt="" style="width: 100%;">';
-      document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+description+img;
+        $('#myModal').modal('toggle');
+        $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
+        var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
+        var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["siteNumber"]+"</p></td></tr>";
+        var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
+        var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
+        var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
+        var accNum = "<td class='leftCol'><div class='resultInfoSection'><strong>Accession #: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='accNum'>"+xml["accNum"]+"</p></td></tr>";
+        var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
+        var img = '<img src="data:image/jpg;base64,'+ xml["image"]+'" alt="" style="width: 100%;">';
+        document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+accNum+description+img;
     }
     function loadModalDataThenOpen() {
       var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};

@@ -43,8 +43,8 @@ def apiCall(request, limit=100):
 		return JsonResponse({"Success": True})
 	elif "uuid" in request.POST.keys():
 		result = Entry.objects.get(uid=request.POST.get("uuid"))
-		result.toDict()
-		return JsonResponse(result.toDict(), safe=False)
+		result.fullInfo()
+		return JsonResponse(result.fullInfo(), safe=False)
 	print("redirecting")
 	return HttpResponseRedirect("/dashboard")
 
@@ -52,7 +52,18 @@ def queryToDict(queryResults, short=True):
 	daList = []
 	for res in queryResults:
 		if not short:
-			daList.append(Entry.toDict(res))
+			daList.append(Entry.fullInfo(res))
 		else:
 			daList.append(Entry.shortInfo(res))
 	return daList
+
+def imgs(request):
+	valid_image="imgs/"
+	try:
+	    with open(valid_image, "rb") as f:
+	        return HttpResponse(f.read(), content_type="image/jpeg")
+	except IOError:
+	    red = Image.new('RGBA', (1, 1), (255,0,0,0))
+	    response = HttpResponse(content_type="image/jpeg")
+	    red.save(response, "JPEG")
+	    return response
