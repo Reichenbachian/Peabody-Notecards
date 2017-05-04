@@ -12,8 +12,7 @@ frequencies = {}
 with open("spellcheckcorpuswithfreqs.csv", 'r') as infile:
     for line in infile:
         word, freq = line.strip().split(',')
-
-    frequencies[word] = int(freq)
+        frequencies[word] = int(freq)
 
 
 
@@ -22,8 +21,8 @@ REGEX_REPLACEMENTS = [["(\w)[£€]", "\1e"],
                       ["(\w)5", "\1s"],
                       ["5(\w)", "s\1"]]
 
-# now to spell-check a single word, we find its closest thing (within the parameter PRECISION) in
-# the list of words we have and then settle ties by commonality in the list
+# now to spell-check a single word, we find its closest thing (within the parameter PRECISION) and
+# then use a less-precise match if it's a lot more commmon (
 PRECISION = 1  # set to 0 to use the closest match regardless of commonality
 def correct(input_word):
     """Returns the closest words in the list of words we have, sorted by likelihood."""
@@ -36,7 +35,7 @@ def correct(input_word):
 
     # now curr_distance is the distance from the shortest match, so add "wiggle room"
     matches = tree.query(input_word, curr_distance + PRECISION)
-    return max(matches, key=lambda w: frequencies.get(w, 1))
+    return max(matches, key=lambda w: frequencies.get(w, 1) / ((tree.levenshtein(w, input_word) + 1) ** 4))
 
 def sentence_correct(input_sentence):
     """Returns a new corrected sentence, being sensitive to punctuation."""
@@ -53,7 +52,7 @@ def sentence_correct(input_sentence):
     # specific to side: the start only has quotes and starting brackets
     # but the end can have a much wider range of things
     WORD_STARTING_PUNCTUATION = "\"'(["  
-    WORD_ENDING_PUNCTUATION = "-:;\"')]"
+    WORD_ENDING_PUNCTUATION = "-:;\"')]."
     ALL_WORD_PUNCTUATION = WORD_STARTING_PUNCTUATION + WORD_ENDING_PUNCTUATION
     corrected_words = []
     # preserves the above punctuation only at word boundaries
@@ -78,7 +77,10 @@ def sentence_correct(input_sentence):
                 i -= 1
 
             # same thing: remove it once we have it stored
-            word = word[:i] if i >= -len(word) else word
+            if i == -1:
+                pass  # doing word[:-1] removes a letter
+            else:
+                word = word[:i+1] if i >= -len(word) else word
 
         # now, we finally just correct it and add to the list, punctuation added back
         corrected_words.append(''.join(start_punc) + correct(word) + ''.join(end_punc))
@@ -104,3 +106,6 @@ def add_word(word, bump_up_by=30):
     else:
         words.append(word)
         frequencies[word] = 1
+
+
+print(sentence_correct("Name urude quartzite stone."))

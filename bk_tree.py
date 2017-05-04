@@ -27,7 +27,7 @@ class BKTree:
             curr_d = self.levenshtein(curr_node[0], word)
 
         # now that we reached a new spot, add the word
-        while len(curr_node[1]) <= curr_d:
+        while len(curr_node[1]) < curr_d:
             curr_node[1].append(None)  # filler
         curr_node[1][curr_d-1] = (word, [])
 
@@ -38,7 +38,7 @@ class BKTree:
         criteria."""
         curr_nodes = [self.root]  # unlike add, we have branching recursrion
         matches = []
-        while curr_nodes:  # still things to branch
+        while len(curr_nodes) > 0:  # still things to branch
             new_nodes = []
             for node in curr_nodes:  # branch here
                 d = self.levenshtein(node[0], target)
@@ -47,8 +47,9 @@ class BKTree:
 
                 # now, branch by getting every extant subtree with distances between d-n and d+n
                 low = max(0, d-n-1)
-                high = min(len(node[0]), d+n)
+                high = min(len(node[1]), d+n+1)
                 new_nodes += [n for n in node[1][low:high] if n is not None]
+            # print(' '.join([n[0] for n in new_nodes]))  
             curr_nodes = new_nodes
 
         matches.sort(key=lambda w: self.levenshtein(w, target))
