@@ -28,7 +28,7 @@ REGEX_REPLACEMENTS = [["(\w)[£€]", "\1e"],
 
 # now to spell-check a single word, we find its closest thing (within the parameter PRECISION) and
 # then use a less-precise match if it's a lot more commmon (
-PRECISION = 1  # set to 0 to use the closest match regardless of commonality
+PRECISION = 0  # set to 0 to use the closest match regardless of commonality
 def correct(input_word):
     """Returns the closest words in the list of words we have, sorted by likelihood."""
     for pattern, substitution in REGEX_REPLACEMENTS:
@@ -69,7 +69,7 @@ def sentence_correct(input_sentence):
         else:  # fix the punctuation
             start_punc = []
             i = 0
-            while word[i] in WORD_STARTING_PUNCTUATION and i < len(word):
+            while i < len(word) and word[i] in WORD_STARTING_PUNCTUATION:
                 start_punc.append(word[i])
                 i += 1
                 # remove those from the word: they'll mess up correction, and we stored them
@@ -77,7 +77,7 @@ def sentence_correct(input_sentence):
             # now go from the end backwards to grab those marks
             end_punc = []
             i = -1
-            while word[i] in WORD_ENDING_PUNCTUATION and i >= -len(word):
+            while i >= -len(word) and word[i] in WORD_ENDING_PUNCTUATION:
                 end_punc.append(word[i])
                 i -= 1
 
@@ -111,3 +111,4 @@ def add_word(word, bump_up_by=30):
     else:
         words.append(word)
         frequencies[word] = 1
+
