@@ -85,6 +85,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
+    }
 }
 # Update database configuration with $DATABASE_URL.
 # DATABASES['default'] = dj_database_url.config()
