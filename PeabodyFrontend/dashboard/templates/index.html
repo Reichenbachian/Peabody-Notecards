@@ -90,7 +90,7 @@
           <form action="." class="form-group search-form" id="search">
             {% csrf_token %}
             <div>
-              <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Query" type="Query">
+              <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search anything...Name, place, squibnocket?" type="Query">
             </input>
             <br>
             <input class="btn btn-lg btn-info search-btn" id="submit" onclick="$('html, body').animate({scrollTop: $('#resultSection').offset().top + 20}, 1000);" type="submit">
