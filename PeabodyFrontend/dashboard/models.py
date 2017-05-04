@@ -21,12 +21,12 @@ class Entry(models.Model):
         print("HERE:", fileLocation)
         with open(fileLocation, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
-    	return {"catNumber": self.catNumber, \
-    			"siteNumber": self.siteNumber, \
-    			"locality": self.locality, \
-    			"site": self.site, \
-    			"name": self.name, \
-    			"situation": self.situation, \
-                "accNum": self.accNum, \
-                "image": encoded_string, \
+        return {"catNumber": self.catNumber,
+                "siteNumber": self.siteNumber,
+                "locality": self.locality,
+                "site": self.site,
+                "name": self.name,
+                "situation": self.situation,
+                "accNum": self.accNum,
+                "image": encoded_string,
                 "uuid": self.uid}
