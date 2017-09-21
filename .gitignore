@@ -8,4 +8,9 @@ __pycache__
 *~
 PeabodyFrontend/venv/*
 PeabodyFrontend/dashboard/migrations/*
-*/venv/*
+/venv
+.venv
+venv/
+venv/*
+venv*
+venv
