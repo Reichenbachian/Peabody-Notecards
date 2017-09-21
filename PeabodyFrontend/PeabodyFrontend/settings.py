@@ -27,7 +27,7 @@ SECRET_KEY = 'e6igr*q0xfif3g%1dhg*ixwwkwu66nsm=0jf2_d=m)ge=1evb3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['peabodynotecards.herokuapp.com','localhost', '127.0.0.1', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['peabodynotecards.herokuapp.com','localhost', '127.0.0.1', '127.0.0.1:8000', 'student.andover.edu']
 
 
 # Application definition
@@ -77,12 +77,19 @@ WSGI_APPLICATION = 'PeabodyFrontend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'peabody',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'PEj?OSSNomFHEYkkbiNr',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
@@ -128,7 +135,8 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+#STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
