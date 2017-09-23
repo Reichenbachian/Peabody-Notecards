@@ -114,6 +114,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 800px;
 }
 
 
