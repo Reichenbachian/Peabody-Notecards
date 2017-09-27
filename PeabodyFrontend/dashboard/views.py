@@ -16,12 +16,13 @@ def apiCall(request, limit=100):
 	if "queryBar" in request.POST.keys():
 		query = request.POST.get("queryBar")
 		catNumberResults = queryToDict(Entry.objects.filter(catNumber__contains=query))
+		accNumResults = queryToDict(Entry.objects.filter(accNum__contains=query))
 		siteNumberResults = queryToDict(Entry.objects.filter(siteNumber__contains=query))
 		localityResults = queryToDict(Entry.objects.filter(locality__contains=query))
 		siteResults = queryToDict(Entry.objects.filter(site__contains=query))
 		nameResults = queryToDict(Entry.objects.filter(name__contains=query))
 		situationResults = queryToDict(Entry.objects.filter(situation__contains=query))
-		results = catNumberResults+siteNumberResults+localityResults+siteResults+nameResults+situationResults
+		results = catNumberResults+siteNumberResults+localityResults+siteResults+nameResults+situationResults+accNumResults
 		return JsonResponse(results[:limit], safe=False)
 	elif "value" in request.POST.keys():
 		uuid = request.POST.get("uuid")
