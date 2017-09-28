@@ -94,10 +94,10 @@
           <form action="javascript:void(0);" class="form-group search-form" id="search">
             {% csrf_token %}
             <div class="row">
-              <div class="col-xs-9">
+              <div class="col-xs-12 col-sm-9">
                 <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search..." type="Query"></input>
               </div>
-              <div class="col-xs-3">
+              <div class="col-sx-12 col-sm-3 ">
                 <a type="submit" class="btn btn-lg btn-block btn-info page-scroll" id="submit" onclick="scrollToResults()" href="#result-section">Submit</a>
               </div>
             </div>
@@ -116,15 +116,31 @@
             Search Results
           </h1>
           <hr>
+          <form action="javascript:void(0);" class="form-group" id="search1">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <input aria-describedby="queryBarAcc" class="form-control" id="queryBarAcc" name="queryBarAcc" placeholder="Search By Accession ..." type="Query"></input>
+              </div>
+              <div class="col-sx-12 col-sm-4">
+                <a class="btn btn-info btn-block" href='javascript:;'
+                onclick='downloadQueryResults({ filename: "db.csv" });'
+                >Download Query Results</a>
+              </div>
+            </div>
+          </form>
           <div class="table-pane">
             <table class="table table-striped table-hover table-responsive">
               <thead>
                 <tr>
                   <th class="text-center col-xs-2">
-                    Cat Number
+                    Catalog Number
                   </th>
-                  <th class="text-center col-xs-8">
-                    Description
+                  <th class="text-center col-xs-2">
+                    Accession Number
+                  </th>
+                  <th class="text-center col-xs-6">
+                    Name
                   </th>
                   <th class="text-center col-xs-2">
                     View
@@ -135,9 +151,6 @@
               </tbody>
             </table>
           </div>
-          <a class="btn btn-lg btn-info" href='javascript:;'
-          onclick='downloadQueryResults({ filename: "db.csv" });'
-          >Download Query Results</a>
         </div>
       </div>
     </div>
@@ -203,11 +216,12 @@
   //Changes a notecard to an editable format
   function changeToEdit() {
     $.fn.editable.defaults.ajaxOptions = {type: "POST"};
-    $('#locality').editable({
-      name:  'locality',
+    $('#name').editable({
+      type:  'text',
       pk:    1,
+      name:  'name',
       url:   'api/',
-      title: 'Enter Corrected Locality',
+      title: 'Enter Corrected Name',
       send: 'always'
     });
     $('#site').editable({
@@ -218,12 +232,11 @@
       title: 'Enter Corrected Site',
       send: 'always'
     });
-    $('#name').editable({
-      type:  'text',
+    $('#locality').editable({
+      name:  'locality',
       pk:    3,
-      name:  'name',
       url:   'api/',
-      title: 'Enter Corrected Name',
+      title: 'Enter Corrected Locality',
       send: 'always'
     });
     $('#situation').editable({
@@ -234,28 +247,22 @@
       title: 'Enter Corrected Description',
       send: 'always'
     });
-    $('#site').editable({
-      type:  'text',
-      pk:    5,
-      name:  'site',
-      url:   'api/',
-      title: 'Enter Corrected Description',
-      send: 'always'
-    });
   }
 
   function openModal(xml) {
     $('#myModal').modal('toggle');
-    $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
-    var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
-    var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["siteNumber"]+"</p></td></tr>";
-    var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
-    var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
-    var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
-    var accNum = "<td class='leftCol'><div class='resultInfoSection'><strong>Accession #: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='accNum'>"+xml["accNum"]+"</p></td></tr>";
-    var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
-    var img = '<img src="data:image/jpg;base64,'+ xml["image"]+'" alt="" style="width: 100%;">';
-    document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+accNum+description+img;
+    $('#modalTitle')[0].innerHTML = "UUID: " + xml["uuid"];
+    var cat = "<table><tbody><tr><td class='leftCol'><div class='resultInfoSection'><strong>Catalog Number: </strong></td></div><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["Catalog Number"]+"</span></td></tr>";
+    var accNum = "<td class='leftCol'><div class='resultInfoSection'><strong>Accession Number: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='accNum'>"+xml["Accession Number"]+"</span></td></tr>";
+    var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["Name"]+"</span></td></tr>";
+    var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["Site"]+"</span></td></tr>";
+    var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["Site Number"]+"</span></td></tr>";
+    var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["Locality"]+"</span></td></tr>";
+    var situation = "<td class='leftCol'><div class='resultInfoSection'><strong>Situation: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["Situation"]+"</span></td></tr>";
+    var created_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Created At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='created_at'>"+xml["Created At"]+"</span></td></tr>";
+    var updated_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Updated At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='updated_at'>"+xml["Updated At"]+"</span></td></tr></tbody></table>";
+    var img = '<img src="data:image/jpg;base64,'+ xml["Image"]+'" alt="Catalog Card Image" style="width: 80%; display: block; margin: auto; padding-top: 30px">';
+    document.getElementById("modal-body").innerHTML = cat+accNum+name+site+siteNum+locality+situation+created_at+updated_at+img;
   }
 
   function loadModalDataThenOpen() {
@@ -283,19 +290,20 @@
       $("#queryError").hide();
       $("#results").find("tr:gt(0)").remove();
       if(xml.length == 0) {
-        $("#results").append("<tr><td>No Results!</td><td>.</td><td>.</td></tr>")
+        $("#results").append("<tr><td>No Results!</td><td>---</td><td>---</td><td>---</td></tr>")
       }
-      csvQueryDownload = xml;
-      console.log(xml)
       for (var i = 0; i < xml.length; i++) {
-        id = xml[i]["uuid"]
+        var keys = ["uuid"];
+        csvQueryDownload.push(_objectWithoutProperties(xml[i], keys));
+        id = xml[i]["uuid"];
         var editString = "<td><button class='btn btn-info' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
-        $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["catNumber"]+
-        "</td><td id='item_"+id+"'>"+xml[i]["situation"]+
+        $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["Catalog Number"]+
+        "</td><td>"+xml[i]["Accession Number"]+ "</td><td id='item_"+id+"'>"+xml[i]["Name"]+
         "</td>"+editString+
         "</tr>");
       }
     }
+    function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
     function downloadQueryResults(args) {
       var data, filename, link;
       var csv = convertArrayOfObjectsToCSV({
@@ -350,6 +358,20 @@
     }
     $(document).ready( function () {
       $('#search').on('keyup', function(e){
+        e.preventDefault();
+        var formdata = $(this).serialize();
+        // formdata["a"] = $("#queryBar");
+        $.ajax({
+          type: "POST",
+          url: "api/",
+          data: formdata,
+          timeout: 1000,
+          success: showResults,
+          error: showError
+        });
+        return false;
+      });
+      $('#search1').on('keyup', function(e){
         e.preventDefault();
         var formdata = $(this).serialize();
         // formdata["a"] = $("#queryBar");
