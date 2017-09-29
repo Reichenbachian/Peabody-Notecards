@@ -95,7 +95,7 @@
             {% csrf_token %}
             <div class="row">
               <div class="col-xs-12 col-sm-9">
-                <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search..." type="Query"></input>
+                <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search All Fields ..." type="Query"></input>
               </div>
               <div class="col-sx-12 col-sm-3 ">
                 <a type="submit" class="btn btn-lg btn-block btn-info page-scroll" id="submit" onclick="scrollToResults()" href="#result-section">Submit</a>
@@ -292,6 +292,7 @@
       if(xml.length == 0) {
         $("#results").append("<tr><td>No Results!</td><td>---</td><td>---</td><td>---</td></tr>")
       }
+      csvQueryDownload = [];
       for (var i = 0; i < xml.length; i++) {
         var keys = ["uuid"];
         csvQueryDownload.push(_objectWithoutProperties(xml[i], keys));
@@ -302,6 +303,7 @@
         "</td>"+editString+
         "</tr>");
       }
+      console.log(csvQueryDownload)
     }
     function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
     function downloadQueryResults(args) {

@@ -17,7 +17,14 @@ class Entry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def shortInfo(self):
-        return {"Catalog Number": self.catNumber, "Accession Number": self.accNum, "Name": self.name, "uuid": self.uid}
+        return {"Catalog Number": self.catNumber,
+                "Accession Number": self.accNum,
+                "Name": self.name,
+                "Site": self.site,
+                "Site Number": self.siteNumber,
+                "Locality": self.locality,
+                "Situation": self.situation,
+                "uuid": self.uid}
     def fullInfo(self):
         fileLocation = SITE_ROOT+"/imgs/"+self.fileName
         print("HERE:", fileLocation)

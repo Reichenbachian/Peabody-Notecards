@@ -41,6 +41,6 @@ export_csv.short_description = u"Export CSV"
 
 class EntryAdmin(admin.ModelAdmin):
     actions = [export_csv]
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'id')
 
 admin.site.register(Entry, EntryAdmin)
