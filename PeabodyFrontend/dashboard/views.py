@@ -2,6 +2,7 @@ from .models import Entry
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from itertools import chain
+from django.utils import timezone
 # Create your views here.
 def index(request):
 	"""
@@ -36,15 +37,19 @@ def apiCall(request, limit=200):
 		result = Entry.objects.get(uid=uuid)
 		if request.POST.get("name") == "name":
 			print(result.name)
-			result.name = val;
+			result.name = val
+			result.updated_at = timezone.now()
 			print(result.name)
 		elif request.POST.get("name") == "site":
-			result.site = val;
+			result.site = val
+			result.updated_at = timezone.now()
 		elif request.POST.get("name") == "locality":
-			result.locality = val;
+			result.locality = val
+			result.updated_at = timezone.now()
 		elif request.POST.get("name") == "situation":
-			result.situation = val;
-		result.save();
+			result.situation = val
+			result.updated_at = timezone.now()
+		result.save()
 		print(uuid)
 		return JsonResponse({"Success": True})
 	elif "uuid" in request.POST.keys():
