@@ -4,6 +4,8 @@ Currently our main code is stored in one app. By the Django documentation, one s
 
 The main app is dashboard. In future, as other supplementary apps are added, this document will be updated.
 
+Make sure db settings is using password.
+
 Make sure to create a virtual environment and install pip packages using "pip install -r requirements.txt". If you add new requirements, add it using "pip freeze > requirements.txt"
 
 ```
