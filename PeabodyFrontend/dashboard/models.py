@@ -24,7 +24,10 @@ class Entry(models.Model):
                 "Site Number": self.siteNumber,
                 "Locality": self.locality,
                 "Situation": self.situation,
-                "uuid": self.uid}
+                "Image": self.fileName,
+                "uuid": self.uid,
+                "Created At": self.created_at,
+                "Updated At": self.updated_at,}
     def fullInfo(self):
         fileLocation = SITE_ROOT+"/imgs/"+self.fileName
         print("HERE:", fileLocation)

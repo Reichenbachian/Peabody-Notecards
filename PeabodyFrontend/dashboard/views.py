@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from itertools import chain
 from django.utils import timezone
+from datetime import datetime, timedelta
 # Create your views here.
 def index(request):
 	"""
@@ -30,6 +31,19 @@ def apiCall(request, limit=200):
 		accNumResults = queryToDict(Entry.objects.filter(accNum=query))
 		results = accNumResults
 		return JsonResponse(results[:limit], safe=False)
+	elif "queryBarUpdatedAt" in request.POST.keys():
+		query = request.POST.get("queryBarUpdatedAt")
+		try:
+			time_threshold = timezone.now() - timedelta(hours=int(query))
+			results = Entry.objects.filter(updated_at__range=(time_threshold,timezone.now()))
+			updatedAtResults = queryToDict(results)
+			results = updatedAtResults
+			return JsonResponse(results[:limit], safe=False)
+		except:
+			results = Entry.objects.none()
+			updatedAtResults = queryToDict(results)
+			results = updatedAtResults
+			return JsonResponse(results[:limit], safe=False)
 	elif "value" in request.POST.keys():
 		uuid = request.POST.get("uuid")
 		pk = request.POST.get("pk")
