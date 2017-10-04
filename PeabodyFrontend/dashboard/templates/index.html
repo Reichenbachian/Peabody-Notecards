@@ -229,6 +229,7 @@
   //Changes a notecard to an editable format
   function changeToEdit() {
     $.fn.editable.defaults.ajaxOptions = {type: "POST"};
+    $.fn.editable.defaults.mode = 'inline';
     $('#name').editable({
       type:  'text',
       pk:    1,
@@ -236,6 +237,7 @@
       url:   'api/',
       title: 'Enter Corrected Name',
       send: 'always'
+      
     });
     $('#site').editable({
       type:  'text',
