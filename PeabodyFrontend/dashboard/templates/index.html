@@ -133,7 +133,7 @@
             {% csrf_token %}
             <div class="row">
               <div class="col-xs-12 col-sm-8">
-                <input aria-describedby="queryBarUpdatedAt" class="form-control" id="queryBarUpdatedAt" name="queryBarUpdatedAt" placeholder="Search By Time Updated At (hours ago) ..." type="Query"></input>
+                <input aria-describedby="queryBarUpdatedAt" class="form-control" id="queryBarUpdatedAt" name="queryBarUpdatedAt" placeholder="Search By Time Updated (e.g. '12' for 'all entries updated in the past 12 hours') ..." type="Query"></input>
               </div>
               <div class="col-sx-12 col-sm-4">
                 <a class="btn btn-info btn-block" href='javascript:;'
@@ -176,7 +176,7 @@
           <h1 class="text-center">About Peabody Notecards</h1>
           <hr>
           <blockquote class="blockquote">
-            <h3>We use OCR algorithms to automate the ditizing process of catalog cards.</h3>
+            <h3>We use OCR algorithms to automate the digitizing process of catalog cards.</h3>
           </blockquote>
         </div>
         <div class="col-lg-4 col-md-6 col-xs-12">
@@ -359,8 +359,7 @@
         ctr = 0;
         keys.forEach(function(key) {
           if (ctr > 0) result += columnDelimiter;
-
-          result += item[key];
+          result += "\"" + item[key] + "\"";
           ctr++;
         });
         result += lineDelimiter;
