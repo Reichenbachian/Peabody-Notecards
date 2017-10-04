@@ -182,17 +182,17 @@
         <div class="col-lg-4 col-md-6 col-xs-12">
           <h2 class="text-center"><i class="fa fa-plus"></i></h2>
           <h3 class="text-center text-bold">Step 1</h3>
-          <p>To input a new card, simply click the add button on the navbar. You can view it by first searching by accession number then clicking the "view" button.</p>
+          <p>To input a new card, simply click the add button on the navbar. You can view it by first searching by string in every field, only in <b>accession number</b>, or by date updated. Then, click the "view" button on the right of the table.</p>
         </div>
         <div class="col-lg-4 col-md-6 col-xs-12">
           <h2 class="text-center"><i class="fa fa-pencil"></i></h2></h2>
           <h3 class="text-center text-bold">Step 2</h3>
-          <p>Make sure you find the card you created and edit it so that the text is correct. Our computer vision algorithms are constantly improving!</p>
+          <p>Make sure you find the card you created and edit it so that the text is correct. Our computer vision algorithms are constantly improving! Refresh the query results by requerying, and if search is not working, the query request is too large, and narrow it by <b>accession number</b>.</p>
         </div>
         <div class="col-lg-4 col-md-12 col-xs-12">
           <h2 class="text-center"><i class="fa fa-arrow-circle-o-down"></i></h2>
           <h3 class="text-center text-bold">Step 3</h3>
-          <p>For Peabody staff with access to the PastPerfect database, click the "Download Entire CSV" button or "Download Query Results" button to download the whole database or query of the current database respectively.</p>
+          <p>For Peabody staff with access to the PastPerfect database, click the "Download Entire CSV" button or "Download Query Results" buttons to download the whole database or query of the current database respectively.</p>
         </div>
       </div>
     </div>
@@ -292,13 +292,14 @@
   }
   function showError(xhr, status, errorThrown) {
     $("#queryError").show();
-    var innerHtml = "<strong>Error!</strong> Is server running?";
+    var innerHtml = "<strong>Error!</strong> Is server running? Query request may be too large.s..";
     document.getElementById("queryError").innerHTML=innerHtml;
     setTimeout(
       function() {
         $("#queryError").hide();
       }, 5000);
     }
+    // TODO: Color edited ones differently with ajax, and get the text updated? Get element by id
     function showResults(xml) {
       $("#queryError").hide();
       $("#results").find("tr:gt(0)").remove();
@@ -310,13 +311,32 @@
         var keys = ["uuid"];
         csvQueryDownload.push(_objectWithoutProperties(xml[i], keys));
         id = xml[i]["uuid"];
-        var editString = "<td><button class='btn btn-info' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
+        var editString = "<td><button class='btn btn-info btn-sm' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
         $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["Catalog Number"]+
-        "</td><td>"+xml[i]["Accession Number"]+ "</td><td id='item_"+id+"'>"+xml[i]["Name"]+
+        "</td><td>"+xml[i]["Accession Number"]+ "</td><td>"+xml[i]["Name"]+
         "</td>"+editString+
         "</tr>");
       }
       console.log(csvQueryDownload)
+    }
+    function refresh(xml) {
+      id = xml["uuid"];
+      var editString = "<td><button class='btn btn-info btn-sm' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
+      document.getElementById("item_"+xml["uuid"]).innerHTML = "<td>"+xml["Catalog Number"]+
+      "</td><td>"+xml["Accession Number"]+ "</td><td>"+xml["Name"]+
+      "</td>"+editString;
+    }
+    function refreshData() {
+      var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};
+
+      $.ajax({
+        type: "POST",
+        url: "api/",
+        data: formdata,
+        timeout: 1000,
+        success: refresh,
+        error: showError
+      });
     }
     function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
     function downloadQueryResults(args) {
@@ -413,6 +433,9 @@
         });
         return false;
       });
+    });
+    $("#myModal").on("hidden.bs.modal", function () {
+      refreshData();
     });
     </script>
   </body>
