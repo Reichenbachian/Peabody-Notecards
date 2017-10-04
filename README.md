@@ -10,14 +10,18 @@ Make sure to create a virtual environment and install pip packages using "pip in
 
 ```
 BASH SCRIPTS
-	•	Ffempg convert .pdf to .pdf.png: for i in *; do for i2 in $i/*; do convert -density 300 -quality 100 $i2 $i2.png; done; done https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image/50180
-	•	Rename: for i in *; do mv "$i" "$(echo $i | cut -f3 -d' ')"; done;
-	•	Delete PDF: find . -name "*.pdf" -delete
-	•	Python manage.py shell, then csv script
+* Ffempg convert .pdf to .pdf.png: for i in *; do for i2 in $i/*; do convert -density 300 -quality 100 $i2 $i2.png; done; done
+* https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image/50180
+* Rename: for i in *; do mv "$i" "$(echo $i | cut -f3 -d' ')"; done;
+* Delete PDF: find . -name "*.pdf" -delete
+* find . -name ".DS_Store" -delete
+* Python manage.py shell, then csv script
+* scp -r /Users/ksun/downloads/Peabody-Notecards/peabody_files/ peabody@student.andover.edu:/home/peabody/Peabody-Notecards/peabody_files
  
 SERVER
-	•	service nginx restart
-	•	Make sure screen is running with ini
-	•	Crl+ad to exit screen (detach)
-	•	Screen -r, do the git pull, then detach, make sure venv is running
+* service nginx restart
+* Screen -r, do the git pull, then detach, make sure venv is running
+* Make sure screen is running with ini
+* uwsgi --ini uwsgi.ini
+* Crl+ad to exit screen (detach)
 ```
