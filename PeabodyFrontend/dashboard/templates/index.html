@@ -237,7 +237,7 @@
       url:   'api/',
       title: 'Enter Corrected Name',
       send: 'always'
-      
+
     });
     $('#site').editable({
       type:  'text',
@@ -305,6 +305,7 @@
     function showResults(xml) {
       $("#queryError").hide();
       $("#results").find("tr:gt(0)").remove();
+      document.getElementById("results").innerHTML="";
       if(xml.length == 0) {
         $("#results").append("<tr><td>No Results!</td><td>---</td><td>---</td><td>---</td></tr>")
       }

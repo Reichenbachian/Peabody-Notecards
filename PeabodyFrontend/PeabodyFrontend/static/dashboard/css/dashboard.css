@@ -159,6 +159,12 @@ body, h1, h2, h3, h4, h5 {
   width: 100%;
 }
 
+@media (max-width: 576px) {
+  .editable-input {
+    width: 60%;
+  }
+}
+
 .result-section {
   padding: 100px 0;
   text-align: center;
