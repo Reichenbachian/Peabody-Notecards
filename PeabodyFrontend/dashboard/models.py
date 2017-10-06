@@ -32,7 +32,7 @@ class Entry(models.Model):
                 "Created At": self.created_at,
                 "Updated At": self.updated_at,}
     def fullInfo(self):
-        fileLocation = SITE_ROOT+"/imgs/"+self.fileName
+        fileLocation = SITE_ROOT+"/../../"+self.fileName
         print("HERE:", fileLocation)
         with open(fileLocation, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
