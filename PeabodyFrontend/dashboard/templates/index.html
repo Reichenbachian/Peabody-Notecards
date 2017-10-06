@@ -372,7 +372,8 @@
       columnDelimiter = args.columnDelimiter || ',';
       lineDelimiter = args.lineDelimiter || '\n';
 
-      keys = Object.keys(data[0]);
+      keys = ["Catalog Number", "Accession Number", "Name", "Site", "Site Number", "Locality", "Situation", "Image", "Created At", "Updated At"]
+      // keys = Object.keys(data[0]);
 
       result = '';
       result += keys.join(columnDelimiter);

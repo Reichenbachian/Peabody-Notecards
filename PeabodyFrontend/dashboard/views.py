@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from itertools import chain
 from django.utils import timezone
 from datetime import datetime, timedelta
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
 # Create your views here.
 def index(request):
 	"""
@@ -17,6 +19,7 @@ def apiCall(request, limit=200):
 	# try:
 	if "queryBar" in request.POST.keys():
 		query = request.POST.get("queryBar")
+		# .annotate(catNum=Cast('catNumber', IntegerField())).order_by('catNum', 'catNumber')
 		catNumberResults = queryToDict(Entry.objects.filter(catNumber__contains=query))
 		accNumResults = queryToDict(Entry.objects.filter(accNum__contains=query))
 		nameResults = queryToDict(Entry.objects.filter(name__contains=query))

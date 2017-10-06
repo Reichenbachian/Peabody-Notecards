@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.http import HttpResponse
 # Register your models here. Username: test. Password: foobar123
 from .models import Entry
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
 
 def export_csv(modeladmin, request, queryset):
     import csv
@@ -37,7 +39,6 @@ def export_csv(modeladmin, request, queryset):
         ])
     return response
 export_csv.short_description = u"Export CSV"
-
 
 class EntryAdmin(admin.ModelAdmin):
     actions = [export_csv]
