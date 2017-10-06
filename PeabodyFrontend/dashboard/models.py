@@ -5,8 +5,8 @@ import os.path
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 # Create your models here.
 class Entry(models.Model):
-    catNumber = models.IntegerField(blank=True, null=True)
-    accNum=models.IntegerField(blank=True)
+    catNumber = models.IntegerField(null=True,blank=True,default=0)
+    accNum=models.IntegerField(null=True,blank=True,default=0)
     name = models.TextField(blank=True, null=True)
     site = models.CharField(max_length=120, blank=True, null=True)
     siteNumber = models.CharField(max_length=120, blank=True, null=True)
@@ -18,7 +18,7 @@ class Entry(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         ordering = ['accNum', 'catNumber']
-    
+
     def shortInfo(self):
         return {"Catalog Number": self.catNumber,
                 "Accession Number": self.accNum,
