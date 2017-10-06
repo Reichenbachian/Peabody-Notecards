@@ -15,25 +15,29 @@ def index(request):
 	# Render the HTML template index.html with the data in the context variable
 	return render(request, 'index.html')
 
-def apiCall(request, limit=200):
+def apiCall(request, limit=1000):
 	# try:
 	if "queryBar" in request.POST.keys():
 		query = request.POST.get("queryBar")
 		# .annotate(catNum=Cast('catNumber', IntegerField())).order_by('catNum', 'catNumber')
-		catNumberResults = queryToDict(Entry.objects.filter(catNumber__contains=query))
-		accNumResults = queryToDict(Entry.objects.filter(accNum__contains=query))
 		nameResults = queryToDict(Entry.objects.filter(name__contains=query))
 		siteResults = queryToDict(Entry.objects.filter(site__contains=query))
 		siteNumberResults = queryToDict(Entry.objects.filter(siteNumber__contains=query))
 		localityResults = queryToDict(Entry.objects.filter(locality__contains=query))
 		situationResults = queryToDict(Entry.objects.filter(situation__contains=query))
-		results = catNumberResults+accNumResults+nameResults+siteResults+siteNumberResults+localityResults+situationResults
+		results = nameResults+siteResults+siteNumberResults+localityResults+situationResults
 		return JsonResponse(results[:limit], safe=False)
 	elif "queryBarAcc" in request.POST.keys():
 		query = request.POST.get("queryBarAcc")
-		accNumResults = queryToDict(Entry.objects.filter(accNum=query))
-		results = accNumResults
-		return JsonResponse(results[:limit], safe=False)
+		try:
+			accNumResults = queryToDict(Entry.objects.filter(accNum=int(query)))
+			results = accNumResults
+			return JsonResponse(results[:limit], safe=False)
+		except:
+			results = Entry.objects.none()
+			accNumResults = queryToDict(results)
+			results = accNumResults
+			return JsonResponse(results[:limit], safe=False)
 	elif "queryBarUpdatedAt" in request.POST.keys():
 		query = request.POST.get("queryBarUpdatedAt")
 		try:
