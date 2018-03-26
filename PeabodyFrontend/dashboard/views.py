@@ -2,6 +2,10 @@ from .models import Entry
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from itertools import chain
+from django.utils import timezone
+from datetime import datetime, timedelta
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
 # Create your views here.
 def index(request):
 	"""
@@ -11,34 +15,62 @@ def index(request):
 	# Render the HTML template index.html with the data in the context variable
 	return render(request, 'index.html')
 
-def apiCall(request, limit=100):
+def apiCall(request, limit=1000):
 	# try:
 	if "queryBar" in request.POST.keys():
 		query = request.POST.get("queryBar")
-		catNumberResults = queryToDict(Entry.objects.filter(catNumber__contains=query))
+		# .annotate(catNum=Cast('catNumber', IntegerField())).order_by('catNum', 'catNumber')
+		nameResults = queryToDict(Entry.objects.filter(name__contains=query))
+		siteResults = queryToDict(Entry.objects.filter(site__contains=query))
 		siteNumberResults = queryToDict(Entry.objects.filter(siteNumber__contains=query))
 		localityResults = queryToDict(Entry.objects.filter(locality__contains=query))
-		siteResults = queryToDict(Entry.objects.filter(site__contains=query))
-		nameResults = queryToDict(Entry.objects.filter(name__contains=query))
 		situationResults = queryToDict(Entry.objects.filter(situation__contains=query))
-		results = catNumberResults+siteNumberResults+localityResults+siteResults+nameResults+situationResults
+		results = nameResults+siteResults+siteNumberResults+localityResults+situationResults
 		return JsonResponse(results[:limit], safe=False)
+	elif "queryBarAcc" in request.POST.keys():
+		query = request.POST.get("queryBarAcc")
+		try:
+			accNumResults = queryToDict(Entry.objects.filter(accNum=int(query)))
+			results = accNumResults
+			return JsonResponse(results[:limit], safe=False)
+		except:
+			results = Entry.objects.none()
+			accNumResults = queryToDict(results)
+			results = accNumResults
+			return JsonResponse(results[:limit], safe=False)
+	elif "queryBarUpdatedAt" in request.POST.keys():
+		query = request.POST.get("queryBarUpdatedAt")
+		try:
+			time_threshold = timezone.now() - timedelta(hours=int(query))
+			results = Entry.objects.filter(updated_at__range=(time_threshold,timezone.now()))
+			updatedAtResults = queryToDict(results)
+			results = updatedAtResults
+			return JsonResponse(results[:limit], safe=False)
+		except:
+			results = Entry.objects.none()
+			updatedAtResults = queryToDict(results)
+			results = updatedAtResults
+			return JsonResponse(results[:limit], safe=False)
 	elif "value" in request.POST.keys():
 		uuid = request.POST.get("uuid")
 		pk = request.POST.get("pk")
 		val = request.POST.get("value")
 		result = Entry.objects.get(uid=uuid)
-		if request.POST.get("name") == "locality":
-			print(result.locality)
-			result.locality = val;
-			print(result.locality)
+		if request.POST.get("name") == "name":
+			print(result.name)
+			result.name = val
+			result.updated_at = timezone.now()
+			print(result.name)
 		elif request.POST.get("name") == "site":
-			result.site = val;
-		elif request.POST.get("name") == "name":
-			result.name = val;
+			result.site = val
+			result.updated_at = timezone.now()
+		elif request.POST.get("name") == "locality":
+			result.locality = val
+			result.updated_at = timezone.now()
 		elif request.POST.get("name") == "situation":
-			result.situation = val;
-		result.save();
+			result.situation = val
+			result.updated_at = timezone.now()
+		result.save()
 		print(uuid)
 		return JsonResponse({"Success": True})
 	elif "uuid" in request.POST.keys():

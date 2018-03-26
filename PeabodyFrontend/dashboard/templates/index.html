@@ -8,27 +8,26 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   {% load static %}
   <!-- Bootstrap CSS -->
-  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Jquery JS -->
-  <script src="http://code.jquery.com/jquery-2.0.3.min.js">
+  <script src="https://code.jquery.com/jquery-2.0.3.min.js">
   </script>
   <!-- Boostrap JS -->
-  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js">
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js">
   </script>
   <link href="{% static 'dashboard/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"/>
 
   <!-- Editable Bootstrap -->
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js">        </script>
-
-  <!-- Custom CSS Stylesheets -->
-  <link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet"/>
-  <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
   <!-- Scrolling Nav JavaScript -->
   <script src="{% static 'dashboard/js/jquery.easing.min.js' %}">
   </script>
   <script src="{% static 'dashboard/js/scrolling-nav.js' %}">
   </script>
+
+  <!-- Custom CSS Stylesheets -->
+  <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet"/>
 
 </meta>
 </meta>
@@ -49,7 +48,7 @@
           <span class="icon-bar">
           </span>
         </button>
-        <a class="navbar-brand page-scroll" href="#page-top">
+        <a class="navbar-brand page-scroll text-white" href="#page-top">
           Peabody Notecards
         </a>
       </div>
@@ -58,16 +57,18 @@
         <ul class="nav navbar-nav">
           <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
           <li class="hidden">
-            <a class="page-scroll" href="#page-top">
-            </a>
+            <a class="page-scroll" href="#intro-section"></a>
+          </li>
+          <li>
+            <a class="page-scroll" href="#result-section">Results</a>
+          </li>
+          <li>
+            <a class="page-scroll" href="#about">About</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a class="page-scroll" href="#page-top">
-            Top <i aria-hidden="true" class="fa fa-angle-double-up">
-              </i>
-            </a>
+            <a class="page-scroll" href="#page-top"><i class="fa fa-home"></i></a>
           </li>
         </ul>
       </div>
@@ -75,6 +76,12 @@
     </div>
     <!-- /.container -->
   </nav>
+
+
+  <div id="queryError" class="alert alert-danger" style="display: none">
+
+  </div>
+
   <!-- Intro Section -->
   <section class="intro-section" id="intro">
     <div class="container">
@@ -83,82 +90,246 @@
           <h1 class="text-white title">
             Search the Database
           </h1>
-        </div>
-        <div>
-          <div class="alert alert-danger" id="queryError" style="display: none">
-          </div>
-          <form action="." class="form-group search-form" id="search">
-            {% csrf_token %}
-            <div>
-              <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search anything...Name, place, squibnocket?" type="Query">
-            </input>
-            <br>
-            <input class="btn btn-lg btn-info search-btn" id="submit" onclick="$('html, body').animate({scrollTop: $('#resultSection').offset().top + 20}, 1000);" type="submit">
-          </input>
-        </br>
-      </div>
-    </form>
-    <a class="btn btn-lg btn-info">Download CSV</a>
-    <script type="text/javascript">
-    var currentNotecard = -1;
-    //Changes a notecard to an editable format
-    function changeToEdit() {
-      $.fn.editable.defaults.ajaxOptions = {type: "POST"};
-      $('#locality').editable({
-        name:  'locality',
-        pk:    1,
-        url:   'api/',
-        title: 'Enter Corrected Locality',
-        send: 'always'
-      });
-      $('#site').editable({
-        type:  'text',
-        pk:    2,
-        name:  'site',
-        url:   'api/',
-        title: 'Enter Corrected Site',
-        send: 'always'
-      });
-      $('#name').editable({
-        type:  'text',
-        pk:    3,
-        name:  'name',
-        url:   'api/',
-        title: 'Enter Corrected Name',
-        send: 'always'
-      });
-      $('#situation').editable({
-        type:  'text',
-        pk:    4,
-        name:  'situation',
-        url:   'api/',
-        title: 'Enter Corrected Description',
-        send: 'always'
-      });
-      $('#site').editable({
-        type:  'text',
-        pk:    5,
-        name:  'site',
-        url:   'api/',
-        title: 'Enter Corrected Description',
-        send: 'always'
-      });
-    }
 
-    function openModal(xml) {
-        $('#myModal').modal('toggle');
-        $('#modalTitle')[0].innerHTML = "Cat #" + xml["catNumber"];
-        var cat = "<table><tr><td class='leftCol'><div class='resultInfoSection'><strong>Cat Number: </strong></td></div><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["catNumber"]+"</p></td></tr>";
-        var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["siteNumber"]+"</p></td></tr>";
-        var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["locality"]+"</p></td></tr>";
-        var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["site"]+"</p></td></tr>";
-        var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["name"]+"</p></td></tr>";
-        var accNum = "<td class='leftCol'><div class='resultInfoSection'><strong>Accession #: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='accNum'>"+xml["accNum"]+"</p></td></tr>";
-        var description = "<td class='leftCol'><div class='resultInfoSection'><strong>Description: </strong></div></td><td class='rightCol'><p data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["situation"]+"</p></td></tr></table>";
-        var img = '<img src="data:image/jpg;base64,'+ xml["image"]+'" alt="" style="width: 100%;">';
-        document.getElementById("modal-body").innerHTML = cat+siteNum+locality+site+name+accNum+description+img;
+          <form action="javascript:void(0);" class="form-group search-form" id="search">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-xs-12 col-sm-9">
+                <input aria-describedby="queryBar" class="form-control" id="queryBar" name="queryBar" placeholder="Search All Fields ..." type="Query"></input>
+              </div>
+              <div class="col-sx-12 col-sm-3 ">
+                <a type="submit" class="btn btn-lg btn-block btn-info page-scroll" id="submit" onclick="scrollToResults()" href="#result-section">Submit</a>
+              </div>
+            </div>
+          </form>
+          <a class="btn btn-lg btn-block btn-info" href="/admin" target="_blank">Download Entire CSV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Result Section -->
+  <section class="result-section" id="result-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1>
+            Search Results
+          </h1>
+          <hr>
+          <form action="javascript:void(0);" class="form-group" id="search1">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <input aria-describedby="queryBarAcc" class="form-control" id="queryBarAcc" name="queryBarAcc" placeholder="Search By Accession ..." type="Query"></input>
+              </div>
+              <div class="col-sx-12 col-sm-4">
+                <a class="btn btn-info btn-block" href='javascript:;'
+                onclick='downloadQueryResults({ filename: "db.csv" });'
+                >Download Query Results</a>
+              </div>
+            </div>
+          </form>
+          <form action="javascript:void(0);" class="form-group" id="search2">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <input aria-describedby="queryBarUpdatedAt" class="form-control" id="queryBarUpdatedAt" name="queryBarUpdatedAt" placeholder="Search By Time Updated (e.g. '12' for 'all entries updated in the past 12 hours') ..." type="Query"></input>
+              </div>
+              <div class="col-sx-12 col-sm-4">
+                <a class="btn btn-info btn-block" href='javascript:;'
+                onclick='downloadQueryResults({ filename: "db.csv" });'
+                >Download Query Results</a>
+              </div>
+            </div>
+          </form>
+          <div class="table-pane">
+            <table class="table table-striped table-hover table-responsive">
+              <thead>
+                <tr>
+                  <th class="text-center col-xs-2">
+                    Catalog Number
+                  </th>
+                  <th class="text-center col-xs-2">
+                    Accession Number
+                  </th>
+                  <th class="text-center col-xs-6">
+                    Name
+                  </th>
+                  <th class="text-center col-xs-2">
+                    View
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="results">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- About Section -->
+  <section id="about" class="about-section landing-section">
+    <div class="container landing-container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="text-center">About Peabody Notecards</h1>
+          <hr>
+          <blockquote class="blockquote">
+            <h3>We use OCR algorithms to automate the digitizing process of catalog cards.</h3>
+          </blockquote>
+        </div>
+        <div class="col-lg-4 col-md-6 col-xs-12">
+          <h2 class="text-center"><i class="fa fa-plus"></i></h2>
+          <h3 class="text-center text-bold">Step 1</h3>
+          <p>To input a new card, simply click the add button on the navbar. You can view it by first searching by string in every field, only in <b>accession number</b>, or by date updated. Then, click the "view" button on the right of the table.</p>
+        </div>
+        <div class="col-lg-4 col-md-6 col-xs-12">
+          <h2 class="text-center"><i class="fa fa-pencil"></i></h2></h2>
+          <h3 class="text-center text-bold">Step 2</h3>
+          <p>Make sure you find the card you created and edit it so that the text is correct. Our computer vision algorithms are constantly improving! Refresh the query results by requerying, and if search is not working, the query request is too large, and narrow it by <b>accession number</b>.</p>
+        </div>
+        <div class="col-lg-4 col-md-12 col-xs-12">
+          <h2 class="text-center"><i class="fa fa-arrow-circle-o-down"></i></h2>
+          <h3 class="text-center text-bold">Step 3</h3>
+          <p>For Peabody staff with access to the PastPerfect database, click the "Download Entire CSV" button or "Download Query Results" buttons to download the whole database or query of the current database respectively.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">
+            ×
+          </button>
+          <h4 class="modal-title" id="modalTitle">
+          </h4>
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-info pull-left" type="button" onClick="changeToEdit()">
+            Edit
+          </button>
+          <button class="btn btn-info" data-dismiss="modal" type="button">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var currentNotecard = -1;
+  var csvQueryDownload = [];
+  //Changes a notecard to an editable format
+  function changeToEdit() {
+    $.fn.editable.defaults.ajaxOptions = {type: "POST"};
+    $.fn.editable.defaults.mode = 'inline';
+    $('#name').editable({
+      type:  'text',
+      pk:    1,
+      name:  'name',
+      url:   'api/',
+      title: 'Enter Corrected Name',
+      send: 'always'
+
+    });
+    $('#site').editable({
+      type:  'text',
+      pk:    2,
+      name:  'site',
+      url:   'api/',
+      title: 'Enter Corrected Site',
+      send: 'always'
+    });
+    $('#locality').editable({
+      name:  'locality',
+      pk:    3,
+      url:   'api/',
+      title: 'Enter Corrected Locality',
+      send: 'always'
+    });
+    $('#situation').editable({
+      type:  'text',
+      pk:    4,
+      name:  'situation',
+      url:   'api/',
+      title: 'Enter Corrected Description',
+      send: 'always'
+    });
+  }
+
+  function openModal(xml) {
+    $('#myModal').modal('toggle');
+    $('#modalTitle')[0].innerHTML = "UUID: " + xml["uuid"];
+    var cat = "<table><tbody><tr><td class='leftCol'><div class='resultInfoSection'><strong>Catalog Number: </strong></td></div><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='catID'>"+xml["Catalog Number"]+"</span></td></tr>";
+    var accNum = "<td class='leftCol'><div class='resultInfoSection'><strong>Accession Number: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='accNum'>"+xml["Accession Number"]+"</span></td></tr>";
+    var name = "<td class='leftCol'><div class='resultInfoSection'><strong>Name: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='name'>"+xml["Name"]+"</span></td></tr>";
+    var site = "<td class='leftCol'><div class='resultInfoSection'><strong>Site: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='site'>"+xml["Site"]+"</span></td></tr>";
+    var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["Site Number"]+"</span></td></tr>";
+    var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["Locality"]+"</span></td></tr>";
+    var situation = "<td class='leftCol'><div class='resultInfoSection'><strong>Situation: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["Situation"]+"</span></td></tr>";
+    var created_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Created At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='created_at'>"+xml["Created At"]+"</span></td></tr>";
+    var updated_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Updated At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='updated_at'>"+xml["Updated At"]+"</span></td></tr></tbody></table>";
+    var img = '<img src="data:image/jpg;base64,'+ xml["Image"]+'" alt="Catalog Card Image" style="width: 80%; display: block; margin: auto; padding-top: 30px">';
+    document.getElementById("modal-body").innerHTML = cat+accNum+name+site+siteNum+locality+situation+created_at+updated_at+img;
+  }
+
+  function loadModalDataThenOpen() {
+    var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};
+
+    $.ajax({
+      type: "POST",
+      url: "api/",
+      data: formdata,
+      timeout: 1000,
+      success: openModal,
+      error: showError
+    });
+  }
+  function showError(xhr, status, errorThrown) {
+    $("#queryError").show();
+    var innerHtml = "<strong>Error!</strong> Is server running? Query request may be too large...";
+    document.getElementById("queryError").innerHTML=innerHtml;
+    setTimeout(
+      function() {
+        $("#queryError").hide();
+      }, 5000);
     }
-    function loadModalDataThenOpen() {
+    // TODO: Color edited ones differently with ajax, and get the text updated? Get element by id
+    function showResults(xml) {
+      $("#queryError").hide();
+      $("#results").find("tr:gt(0)").remove();
+      document.getElementById("results").innerHTML="";
+      if(xml.length == 0) {
+        $("#results").append("<tr><td>No Results!</td><td>---</td><td>---</td><td>---</td></tr>")
+      }
+      csvQueryDownload = [];
+      for (var i = 0; i < xml.length; i++) {
+        var keys = ["uuid"];
+        csvQueryDownload.push(_objectWithoutProperties(xml[i], keys));
+        id = xml[i]["uuid"];
+        var editString = "<td><button class='btn btn-info btn-sm' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
+        $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["Catalog Number"]+
+        "</td><td>"+xml[i]["Accession Number"]+ "</td><td>"+xml[i]["Name"]+
+        "</td>"+editString+
+        "</tr>");
+      }
+      console.log(csvQueryDownload)
+    }
+    function refresh(xml) {
+      id = xml["uuid"];
+      var editString = "<td><button class='btn btn-info btn-sm' onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
+      document.getElementById("item_"+xml["uuid"]).innerHTML = "<td>"+xml["Catalog Number"]+
+      "</td><td>"+xml["Accession Number"]+ "</td><td>"+xml["Name"]+
+      "</td>"+editString;
+    }
+    function refreshData() {
       var formdata = {csrfmiddlewaretoken: '{{ csrf_token }}', "uuid": currentNotecard};
 
       $.ajax({
@@ -166,36 +337,93 @@
         url: "api/",
         data: formdata,
         timeout: 1000,
-        success: openModal,
+        success: refresh,
         error: showError
       });
     }
-    function showError(xhr, status, errorThrown) {
-      $("#queryError").show();
-      var innerHtml = "<strong>Error!</strong> Is server running?";
-      document.getElementById("queryError").innerHTML=innerHtml;
-    }
-    function showResults(xml) {
-      $("#queryError").hide();
-      $("#results").find("tr:gt(0)").remove();
-      if(xml.length == 0) {
-        $("#results").append("<tr><td>No Results!</td></tr>")
+    function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+    function downloadQueryResults(args) {
+      var data, filename, link;
+      var csv = convertArrayOfObjectsToCSV({
+        data: csvQueryDownload
+      });
+      if (csv == null) return;
+
+      filename = args.filename || 'export.csv';
+
+      if (!csv.match(/^data:text\/csv/i)) {
+        csv = 'data:text/csv;charset=utf-8,' + csv;
       }
-      for (var i = 0; i < xml.length; i++) {
-        id=xml[i]["uuid"]
-        var editString = "<td><button class='btn editButton'  onclick=\"currentNotecard='"+id+"'; loadModalDataThenOpen();\">View</button></td>";
-        $("#results").append("<tr id='item_"+id+"'><td>"+xml[i]["catNumber"]+
-        "</td><td id='item_"+id+"'>"+xml[i]["situation"]+
-        "</td id='item_"+id+"'>"+editString+
-        "</tr>");
-      }
-      $("#result-section").css("height", $("#results").height());
+      data = encodeURI(csv);
+
+      link = document.createElement('a');
+      link.setAttribute('href', data);
+      link.setAttribute('download', filename);
+      link.click();
     }
-    function receiveQueryResults(xml) {
-      console.log(xml);
+    function convertArrayOfObjectsToCSV(args) {
+      var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+      data = args.data || null;
+      if (data == null || !data.length) {
+        return null;
+      }
+
+      columnDelimiter = args.columnDelimiter || ',';
+      lineDelimiter = args.lineDelimiter || '\n';
+
+      keys = ["Catalog Number", "Accession Number", "Name", "Site", "Site Number", "Locality", "Situation", "Image", "Created At", "Updated At"]
+      // keys = Object.keys(data[0]);
+
+      result = '';
+      result += keys.join(columnDelimiter);
+      result += lineDelimiter;
+
+      data.forEach(function(item) {
+        ctr = 0;
+        keys.forEach(function(key) {
+          if (ctr > 0) result += columnDelimiter;
+          result += "\"" + item[key] + "\"";
+          ctr++;
+        });
+        result += lineDelimiter;
+      });
+
+      return result;
+    }
+    function scrollToResults() {
+      $('html, body').animate({scrollTop: $('#result-section').offset().top + 20}, 1000);
     }
     $(document).ready( function () {
-      $('#search').on('click', function(e){
+      $('#search').on('keyup', function(e){
+        e.preventDefault();
+        var formdata = $(this).serialize();
+        // formdata["a"] = $("#queryBar");
+        $.ajax({
+          type: "POST",
+          url: "api/",
+          data: formdata,
+          timeout: 1000,
+          success: showResults,
+          error: showError
+        });
+        return false;
+      });
+      $('#search1').on('keyup', function(e){
+        e.preventDefault();
+        var formdata = $(this).serialize();
+        // formdata["a"] = $("#queryBar");
+        $.ajax({
+          type: "POST",
+          url: "api/",
+          data: formdata,
+          timeout: 1000,
+          success: showResults,
+          error: showError
+        });
+        return false;
+      });
+      $('#search2').on('keyup', function(e){
         e.preventDefault();
         var formdata = $(this).serialize();
         // formdata["a"] = $("#queryBar");
@@ -210,59 +438,9 @@
         return false;
       });
     });
+    $("#myModal").on("hidden.bs.modal", function () {
+      refreshData();
+    });
     </script>
-  </div>
-</div>
-</div>
-</section>
-<!-- About Section -->
-<section class="result-section" id="resultSection">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 align="middle">
-          Search Results
-        </h1>
-        <table class="table" id="results" style="width:100%;">
-          <tr>
-            <th>
-              Cat Number
-            </th>
-            <th>
-              Description
-            </th>
-            <th>
-              View
-            </th>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-<div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button class="close" data-dismiss="modal" type="button">
-          ×
-        </button>
-        <h4 class="modal-title" id="modalTitle">
-        </h4>
-      </div>
-      <div class="modal-body" id="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default pull-left" type="button" onClick="changeToEdit()">
-          Edit
-        </button>
-        <button class="btn btn-default" data-dismiss="modal" type="button">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+  </body>
+  </html>

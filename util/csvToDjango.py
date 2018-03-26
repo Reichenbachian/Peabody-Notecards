@@ -1,17 +1,23 @@
+# Clear db first if people didnt edit: email taylor to check
+
 from dashboard.models import *
 import csv
-with open("/Users/localhost/Desktop/Projects/Working/PeabodyNotecards/test2.csv") as f:
+with open("../test5.csv") as f:
     reader = csv.reader(f)
+    has_read = False
     for row in reader:
+        if not has_read:
+            has_read = True # skip first row
+            continue
         _, created = Entry.objects.get_or_create(
-            catNumber=row[2],
-            siteNumber=row[3],
-            locality=row[4],
-            site=row[5],
-            name=row[6],
-            situation=row[7],
-            accNum=row[8],
-            fileName=row[9]
+            catNumber=str(row[0].decode('ascii', errors='ignore').encode('ascii')),
+            accNum=str(row[6].decode('ascii', errors='ignore').encode('ascii')),
+            name=str(row[4].decode('ascii', errors='ignore').encode('ascii')),
+            site=str(row[3].decode('ascii', errors='ignore').encode('ascii')),
+            siteNumber=str(row[1].decode('ascii', errors='ignore').encode('ascii')),
+            locality=str(row[2].decode('ascii', errors='ignore').encode('ascii')),
+            situation=str(row[5].decode('ascii', errors='ignore').encode('ascii')),
+            fileName=str(row[7].decode('ascii', errors='ignore').encode('ascii'))
             )
 
     # i = 0
