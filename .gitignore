@@ -8,3 +8,5 @@ __pycache__
 *~
 PeabodyFrontend/venv/*
 PeabodyFrontend/dashboard/migrations/*
+*.DS_Store*
+*venv*
