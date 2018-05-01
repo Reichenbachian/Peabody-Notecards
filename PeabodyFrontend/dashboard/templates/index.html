@@ -262,6 +262,14 @@
       title: 'Enter Corrected Description',
       send: 'always'
     });
+    $('#remarks').editable({
+      type:  'text',
+      pk:    5,
+      name:  'remarks',
+      url:   'api/',
+      title: 'Enter Corrected Remarks',
+      send: 'always'
+    });
   }
 
   function openModal(xml) {
@@ -274,10 +282,11 @@
     var siteNum = "<td class='leftCol'><div class='resultInfoSection' id='siteNumID'><strong>Site Number: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='siteNumber'>"+xml["Site Number"]+"</span></td></tr>";
     var locality = "<td class='leftCol'><div class='resultInfoSection'><strong>Locality: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='locality'>"+xml["Locality"]+"</span></td></tr>";
     var situation = "<td class='leftCol'><div class='resultInfoSection'><strong>Situation: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='situation'>"+xml["Situation"]+"</span></td></tr>";
+    var remarks = "<td class='leftCol'><div class='resultInfoSection'><strong>Remarks: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='remarks'>"+xml["Remarks"]+"</span></td></tr>";
     var created_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Created At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='created_at'>"+xml["Created At"]+"</span></td></tr>";
     var updated_at = "<td class='leftCol'><div class='resultInfoSection'><strong>Updated At: </strong></div></td><td class='rightCol'><span data-params=\"{csrfmiddlewaretoken:'{{csrf_token}}', uuid:'"+currentNotecard+"'}\" id='updated_at'>"+xml["Updated At"]+"</span></td></tr></tbody></table>";
     var img = '<img src="data:image/jpg;base64,'+ xml["Image"]+'" alt="Catalog Card Image" style="width: 80%; display: block; margin: auto; padding-top: 30px">';
-    document.getElementById("modal-body").innerHTML = cat+accNum+name+site+siteNum+locality+situation+created_at+updated_at+img;
+    document.getElementById("modal-body").innerHTML = cat+accNum+name+site+siteNum+locality+situation+remarks+created_at+updated_at+img;
   }
 
   function loadModalDataThenOpen() {
@@ -372,7 +381,7 @@
       columnDelimiter = args.columnDelimiter || ',';
       lineDelimiter = args.lineDelimiter || '\n';
 
-      keys = ["Catalog Number", "Accession Number", "Name", "Site", "Site Number", "Locality", "Situation", "Image", "Created At", "Updated At"]
+      keys = ["Catalog Number", "Accession Number", "Name", "Site", "Site Number", "Locality", "Situation", "Remarks", "Image", "Created At", "Updated At"]
       // keys = Object.keys(data[0]);
 
       result = '';

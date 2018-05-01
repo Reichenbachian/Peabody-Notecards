@@ -12,6 +12,7 @@ class Entry(models.Model):
     siteNumber = models.CharField(max_length=120, blank=True, null=True)
     locality = models.TextField(blank=True, null=True)
     situation = models.TextField(blank=True, null=True)
+    remarks = models.TextField(blank=True, null=True)
     fileName = models.CharField(max_length=120, blank=True, null=True)
     uid=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,6 +28,7 @@ class Entry(models.Model):
                 "Site Number": self.siteNumber,
                 "Locality": self.locality,
                 "Situation": self.situation,
+                "Remarks": self.remarks,
                 "Image": self.fileName,
                 "uuid": self.uid,
                 "Created At": self.created_at,
@@ -43,6 +45,7 @@ class Entry(models.Model):
                 "Site Number": self.siteNumber,
                 "Locality": self.locality,
                 "Situation": self.situation,
+                "Remarks": self.remarks,
                 "Image": encoded_string,
                 "uuid": self.uid,
                 "Created At": self.created_at,

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
-# Register your models here. Username: test. Password: foobar123
+# Register your models here. Username: test. or ksun. Password: foobar123
 from .models import Entry
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
@@ -20,6 +20,7 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"Site Number"),
         smart_str(u"Locality"),
         smart_str(u"Situation"),
+        smart_str(u"Remarks"),
         smart_str(u"Image"),
         smart_str(u"Created At"),
         smart_str(u"Updated At"),
@@ -33,6 +34,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.siteNumber),
             smart_str(obj.locality),
             smart_str(obj.situation),
+            smart_Str(obj.remarks),
             smart_str(obj.fileName),
             smart_str(obj.created_at),
             smart_str(obj.updated_at),

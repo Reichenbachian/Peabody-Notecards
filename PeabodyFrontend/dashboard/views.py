@@ -25,7 +25,8 @@ def apiCall(request, limit=1000):
 		siteNumberResults = queryToDict(Entry.objects.filter(siteNumber__contains=query))
 		localityResults = queryToDict(Entry.objects.filter(locality__contains=query))
 		situationResults = queryToDict(Entry.objects.filter(situation__contains=query))
-		results = nameResults+siteResults+siteNumberResults+localityResults+situationResults
+		remarksResults = queryToDict(Entry.objects.filter(remarks__contains=query))
+		results = nameResults+siteResults+siteNumberResults+localityResults+situationResults+remarksResults
 		return JsonResponse(results[:limit], safe=False)
 	elif "queryBarAcc" in request.POST.keys():
 		query = request.POST.get("queryBarAcc")
@@ -69,6 +70,9 @@ def apiCall(request, limit=1000):
 			result.updated_at = timezone.now()
 		elif request.POST.get("name") == "situation":
 			result.situation = val
+			result.updated_at = timezone.now()
+		elif request.POST.get("name") == "remarks":
+			result.remarks = val
 			result.updated_at = timezone.now()
 		result.save()
 		print(uuid)

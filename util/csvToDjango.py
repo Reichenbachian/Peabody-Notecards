@@ -10,8 +10,8 @@ with open("../test5.csv") as f:
             has_read = True # skip first row
             continue
         _, created = Entry.objects.get_or_create(
-            catNumber=str(row[0].decode('ascii', errors='ignore').encode('ascii')),
-            accNum=str(row[6].decode('ascii', errors='ignore').encode('ascii')),
+            catNumber=int(''.join(x for x in str(row[0].decode('ascii', errors='ignore').encode('ascii')) if x.isdigit())),
+            accNum=int(''.join(x for x in str(row[6].decode('ascii', errors='ignore').encode('ascii')) if x.isdigit())),
             name=str(row[4].decode('ascii', errors='ignore').encode('ascii')),
             site=str(row[3].decode('ascii', errors='ignore').encode('ascii')),
             siteNumber=str(row[1].decode('ascii', errors='ignore').encode('ascii')),
