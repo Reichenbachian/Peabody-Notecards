@@ -10,11 +10,7 @@ __pycache__
 *~
 PeabodyFrontend/venv/*
 PeabodyFrontend/dashboard/migrations/*
-/venv
-.venv
-venv/
-venv/*
-venv*
-venv
+*.DS_Store*
+*venv*
 settings.py
 PeabodyFrontend/PeabodyFrontend/settings.py
