@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
+import pdb
 # Create your views here.
 def index(request):
 	"""
@@ -94,6 +95,7 @@ def queryToDict(queryResults, short=True):
 	return daList
 
 def imgs(request):
+	pdb.set_trace()
 	valid_image="imgs/"
 	try:
 	    with open(valid_image, "rb") as f:

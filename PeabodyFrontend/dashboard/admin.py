@@ -34,7 +34,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.siteNumber),
             smart_str(obj.locality),
             smart_str(obj.situation),
-            smart_Str(obj.remarks),
+            smart_str(obj.remarks),
             smart_str(obj.fileName),
             smart_str(obj.created_at),
             smart_str(obj.updated_at),
